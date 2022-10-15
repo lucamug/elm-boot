@@ -1,0 +1,9 @@
+{
+  "checks": {
+    "DropConcatOfLists": false,
+    "MapNothingToNothing": false,
+    "UnnecessaryListConcat": false,
+    "UseConsOverConcat": false
+  },
+  "excludedPaths": []
+}

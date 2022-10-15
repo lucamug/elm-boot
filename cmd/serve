@@ -1,0 +1,13 @@
+#!/bin/bash
+set -eu
+
+ELM_MAIN_FILE=${1:-"src/Main.elm"}
+COMPILING_MODE=${2:-"--debug"}
+if [ $COMPILING_MODE != "--debug" ] && [ $COMPILING_MODE != "--optimize" ]; then
+    COMPILING_MODE=""
+fi
+source cmd/config
+createIndexHtml
+COMMAND="${ELM_GO} ${ELM_MAIN_FILE} --dir=docs --pushstate --start-page=index.html --hot --port=4200 --path-to-elm=${ELM} -- --output=docs/js/elm.js ${COMPILING_MODE}"
+COMMENT="Starting the development environment"
+singleCommand "${COMMAND}" "${COMMENT}"

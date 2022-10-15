@@ -1,0 +1,8 @@
+{
+  "devDependencies": {
+    "elm-go": "^5.0.19",
+    "replace": "^1.2.2",
+    "elm-review": "^2.8.2"
+  },
+  "dependencies": {}
+}

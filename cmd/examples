@@ -1,0 +1,59 @@
+#!/bin/bash
+set -eu
+
+YELLOW="\e[33m"
+BLUE="\e[34m"
+STOP="\e[0m"
+PRIMARY=$YELLOW
+SECONDARY=$BLUE
+
+printf "\n"
+printf "${SECONDARY}┏━━━ ${PRIMARY}Select a Code Sample${SECONDARY} ━━━━━━━━━━━━━━━┓\n"
+printf "${SECONDARY}┃                                        ┃\n"
+printf "${SECONDARY}┃${PRIMARY}   1. 👋  Hello, World! ${SECONDARY} .. (elm-html)  ┃\n"
+printf "${SECONDARY}┃                                        ┃\n"
+printf "${SECONDARY}┃${PRIMARY}   2. ⏳  Counter ${SECONDARY}.............. (TEA)  ┃\n"
+printf "${SECONDARY}┃                                        ┃\n"
+printf "${SECONDARY}┃${PRIMARY}   3. ⏳  Counter ${SECONDARY}........... (elm-ui)  ┃\n"
+printf "${SECONDARY}┃                                        ┃\n"
+printf "${SECONDARY}┃${PRIMARY}   4. 🐾  Cats' facts ${SECONDARY}..... (elm-http)  ┃\n"
+printf "${SECONDARY}┃                                        ┃\n"
+printf "${SECONDARY}┃${PRIMARY}   5. 🌐  Geolocation ${SECONDARY}..... (elm-http)  ┃\n"
+printf "${SECONDARY}┃                                        ┃\n"
+printf "${SECONDARY}┃${PRIMARY}   6. ♦️   Cards ${SECONDARY}......... (elm-random)  ┃\n"
+printf "${SECONDARY}┃                                        ┃\n"
+printf "${SECONDARY}┃${PRIMARY}   7. ⏰  Clock ${SECONDARY}........... (elm-time)  ┃\n"
+printf "${SECONDARY}┃                                        ┃\n"
+printf "${SECONDARY}┃${PRIMARY}   8. 📝  Todos ${SECONDARY}.............. (ports)  ┃\n"
+printf "${SECONDARY}┃                                        ┃\n"
+printf "${SECONDARY}┃${PRIMARY}   9. 💻  SPA ${SECONDARY}......... (all examples)  ┃\n"
+printf "${SECONDARY}┃                                        ┃\n"
+printf "${SECONDARY}┃  The source code of these examples is  ┃\n"
+printf "${SECONDARY}┃  in the src-examples/Examples folder.  ┃\n"
+printf "${SECONDARY}┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n"
+printf "${PRIMARY}\n"
+read -p "Example number: " EXAMPLE
+DEMO=${EXAMPLE:-"_"}
+printf "\n"
+
+if   [ $EXAMPLE == "1" ]; then
+    cmd/serve src-examples/Examples/MainHelloWorld.elm
+elif [ $EXAMPLE == "2" ]; then
+    cmd/serve src-examples/Examples/MainCounter.elm
+elif [ $EXAMPLE == "3" ]; then
+    cmd/serve src-examples/Examples/MainCounterElmUi.elm
+elif [ $EXAMPLE == "4" ]; then
+    cmd/serve src-examples/Examples/MainCatsFacts.elm
+elif [ $EXAMPLE == "5" ]; then
+    cmd/serve src-examples/Examples/MainGeolocation.elm
+elif [ $EXAMPLE == "6" ]; then
+    cmd/serve src-examples/Examples/MainCards.elm
+elif [ $EXAMPLE == "7" ]; then
+    cmd/serve src-examples/Examples/MainClock.elm
+elif [ $EXAMPLE == "8" ]; then
+    cmd/serve src-examples/Examples/MainTodos.elm
+elif [ $EXAMPLE == "9" ]; then
+    cmd/serve src-examples/MainSPA.elm
+else
+    printf "Demo ${DEMO} not found\n\n"    
+fi

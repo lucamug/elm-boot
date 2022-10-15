@@ -1,0 +1,4 @@
+#!/bin/bash
+set -eu
+
+cmd/serve ${1:-"src/Main.elm"} ${2:-"--debug"}

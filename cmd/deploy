@@ -1,0 +1,25 @@
+#!/bin/bash
+set -eu
+
+source cmd/config
+printf "The ${PRIMARY}deployment${STOP} is up to you.\n"
+printf "\n"
+printf "The build is compatible with surge.sh and netlify.com.\n"
+printf "\n"
+printf "To deploy using ${PRIMARY}https://surge.sh/${STOP} edit \`docs/CNAME\` and run.\n"
+printf "\n"
+printf "> surge dist\n"
+printf "\n"
+printf "To deploy using ${PRIMARY}https://netlify.com/${STOP} you need to setup, from their web interface:\n"
+printf "\n"
+printf "     * Build command......: cmd/build src-examples/MainSPA.elm\n"
+printf "     * Publish directory..: dist\n"
+printf "\n"
+printf "Then the site will be automatically built and published anytime a new commit is merged.\n"
+printf "\n"
+printf "Those are examples of deployed websites:\n"
+printf "\n"
+printf "     * https://elm-boot.surge.sh/\n"
+printf "     * https://elm-boot.netlify.app/\n"
+printf "\n"
+

@@ -1,0 +1,17 @@
+{
+  "devDependencies": {
+    "elm": "^0.19.1-5",
+    "elm-doc-preview": "^5.0.5",
+    "elm-format": "^0.8.5",
+    "elm-go": "^5.0.19",
+    "elm-json": "^0.2.13",
+    "elm-review": "^2.8.2",
+    "elm-test": "^0.19.1-revision10",
+    "esbuild": "^0.15.13",
+    "html-minifier": "^4.0.0",
+    "npm-check-updates": "^16.3.25",
+    "replace": "^1.2.2",
+    "terser": "^5.15.1"
+  },
+  "dependencies": {}
+}

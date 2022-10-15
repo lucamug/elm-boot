@@ -1,0 +1,33 @@
+# Documentation at
+# https://docs.replit.com/programming-ide/configuring-repl
+
+# The command that is executed when the run button is clicked.
+run = ["bash"]
+
+# The default file opened in the editor.
+entrypoint = "src/Main.elm"
+
+# Hidden files
+hidden = ["package.replit.json", "package.local.json", "review/elm-stuff", "review/suppressed", "package.json", ".config", "elm-stuff", "index.html", "yarn.lock", "elm-analyse.json", ".gitignore", "package.lock"]
+
+
+# Setting environment variables
+[env]
+FOO="foo"
+
+# Per language configuration: language.<lang name> 
+[languages.elm]
+# The glob pattern to match files for this programming language
+pattern = "**/*.elm"
+    [languages.elm.languageServer]
+    start = "elm-language-server --stdio"
+
+# Per language configuration: language.<lang name> 
+# [languages.javascript]
+# The glob pattern to match files for this programming language
+# pattern = "**/{*.js,*.jsx,*.ts,*.tsx,*.mjs,*.cjs}"
+#    [languages.javascript.languageServer]
+#    start = ["typescript-language-server", "--stdio"]
+
+[nix]
+channel = "stable-21_11"

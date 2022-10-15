@@ -1,0 +1,34 @@
+# Build folders
+/dist/
+
+# Development generated files
+/docs/js/elm.js
+
+# Dependency folders (can exists also on subfolders)
+elm-stuff/
+node_modules/
+
+# Desktop Services Store on macOS
+.DS_Store
+
+# IDE plugin configurations and temp files
+.vscode/
+.idea/
+
+# Atom Elm plugin temporary file
+Elmjutsu*.elm
+
+# This file can be generate by mistake if running "elm make"
+/index.html
+
+# index.html is generated from /docs/index.template.html
+/docs/index.html
+
+# We use Yarn, for this repo
+package-lock.json
+
+# We also remove yarn.lock, to avoid to many changes
+yarn.lock
+
+.config
+yarn-error.log

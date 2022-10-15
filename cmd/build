@@ -1,0 +1,95 @@
+#!/bin/bash
+set -eu
+
+START_TIME_ALL=$SECONDS
+ELM_MAIN_FILE=${1:-"src/Main.elm"}
+
+source cmd/config
+
+printf "${PRIMARY}           ┌───────────────────┐${STOP}\n"
+printf "${PRIMARY}           │${SECONDARY}   Build process${PRIMARY}   │${STOP}\n"
+printf "${PRIMARY}           └───────────────────┘${STOP}\n"
+printf "\n"
+
+
+printf "${PRIMARY}${POINT}Removing old build........"
+    START_TIME=$SECONDS 
+    rm -rf $FOLDER_DIST
+    ELAPSED_TIME=$(($SECONDS - $START_TIME))
+printf "$BLUE done in $ELAPSED_TIME secs$STOP\n"
+
+
+printf "${PRIMARY}${POINT}Creating folders.........."
+    START_TIME=$SECONDS 
+    mkdir -p $FOLDER_DIST
+    mkdir -p $FOLDER_DIST/js
+    mkdir -p $FOLDER_DIST/images
+    mkdir -p $FOLDER_TEMP
+    ELAPSED_TIME=$(($SECONDS - $START_TIME))
+printf "$BLUE done in $ELAPSED_TIME secs$STOP\n"
+
+printf "${PRIMARY}${POINT}Starting compiling Elm${STOP}\n\n"
+    START_TIME=$SECONDS 
+    $ELM make ${ELM_MAIN_FILE} --output=$FOLDER_TEMP/elm.js --optimize
+    ELAPSED_TIME=$(($SECONDS - $START_TIME))
+    printf "${PRIMARY}${POINT}Compiled Elm.............."
+printf "$BLUE done in $ELAPSED_TIME secs$STOP\n"
+
+
+printf "${PRIMARY}${POINT}Start minifing JavaScript${STOP}\n"
+    START_TIME=$SECONDS 
+    #
+    # Switched to esbuild because Terser was too slow.
+    # Read https://discourse.elm-lang.org/t/what-i-ve-learned-about-minifying-elm-code/7632/3
+    # for smaller bundle.
+    #
+    cat ${FOLDER_TEMP}/elm.js docs/js/starter.js > ${FOLDER_TEMP}/concatenated.js
+    COMMAND="${NODEAPP_ESBUILD} ${FOLDER_TEMP}/concatenated.js --minify --target=es5 --outfile=$FOLDER_DIST/js/elm-${COMMIT_HASH}.min.js"
+    # COMMAND="${NODEAPP_TERSER} ${FOLDER_TEMP}/concatenated.js --no-rename --compress 'pure_funcs=\"F2,F3,F4,F5,F6,F7,F8,F9,A2,A3,A4,A5,A6,A7,A8,A9\",pure_getters=true,keep_fargs=false,unsafe_comps=true,unsafe=true,passes=2' --mangle --output=$FOLDER_DIST/js/elm-${COMMIT_HASH}.min.js"
+    eval "${COMMAND}"    
+    ELAPSED_TIME=$(($SECONDS - $START_TIME))
+    printf "\n"
+    printf "${PRIMARY}${POINT}Minification completed...."
+printf "$BLUE done in $ELAPSED_TIME secs$STOP\n"
+
+createIndexHtml
+
+printf "${PRIMARY}${POINT}Modifing index.html......."
+    START_TIME=$SECONDS
+    cp docs/index.html $FOLDER_TEMP/index.html
+    $NODEAPP_REPLACE '(<script class="dev-only".*</script>)' '<!-- $1 -->' $FOLDER_TEMP/index.html -m -i --silent
+    $NODEAPP_REPLACE '<!-- prod-only (.*) -->' '$1' $FOLDER_TEMP/index.html -m -i --silent
+    $NODEAPP_HTML_MINIFIER -o $FOLDER_DIST/index.html $FOLDER_TEMP/index.html --remove-comments --collapse-whitespace --collapse-inline-tag-whitespace --minify-css --minify-js
+    ELAPSED_TIME=$(($SECONDS - $START_TIME))
+printf "$BLUE done in $ELAPSED_TIME secs$STOP\n"
+
+
+printf "${PRIMARY}${POINT}Copying other files ......"
+    START_TIME=$SECONDS 
+    cp docs/images/*           $FOLDER_DIST/images/ || true
+    cp docs/favicon.ico        $FOLDER_DIST
+    cp docs/robots.txt         $FOLDER_DIST
+    cp docs/CNAME              $FOLDER_DIST
+    cp docs/_redirects         $FOLDER_DIST
+    cp $FOLDER_DIST/index.html $FOLDER_DIST/200.html
+    ELAPSED_TIME=$(($SECONDS - $START_TIME))
+printf "$BLUE done in $ELAPSED_TIME secs$STOP\n"
+
+
+printf "${PRIMARY}${POINT}Cleanup..................."
+    START_TIME=$SECONDS 
+    rm -rf $FOLDER_TEMP
+    ELAPSED_TIME=$(($SECONDS - $START_TIME))
+printf "$BLUE done in $ELAPSED_TIME secs$STOP\n"
+
+ELAPSED_TIME_ALL=$(($SECONDS - $START_TIME_ALL))
+
+printf "${PRIMARY}${POINT}Completed ${BLUE}in $ELAPSED_TIME_ALL secs${PRIMARY}!$STOP\n"
+printf "\n"
+printf "${PRIMARY}Production files are ready in${STOP}\n"
+printf "\n"
+printf "${SECONDARY}    ${FOLDER_DIST}${STOP}\n"
+printf "\n"
+printf "${PRIMARY}           ┌───────────────────┐${STOP}\n"
+printf "${PRIMARY}           │${SECONDARY}      THE END${PRIMARY}      │${STOP}\n"
+printf "${PRIMARY}           └───────────────────┘${STOP}\n"

@@ -1,0 +1,7 @@
+#!/bin/bash
+set -eu
+
+source cmd/config
+COMMAND="${ELM_REVIEW} --ignore-dirs src-examples"
+COMMENT="Reviewing using elm-review"
+singleCommand "${COMMAND}" "${COMMENT}"
